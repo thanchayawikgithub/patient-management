@@ -8,14 +8,12 @@ services:
       - "4000:4000"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://patient-service-db:5432/patient-service-db
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_SQL_INIT_MODE: always
+      BILLING_SERVICE_ADDRESS: billing-service-app
+      BILLING_SERVICE_GRPC_PORT: 9001
     depends_on:
       - db
     networks:
-      - internal
+      - patient-management
 
   db:
     image: postgres:17.4
@@ -29,11 +27,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - internal
+      - patient-management
 
 volumes:
   postgres_data:
 
 networks:
-  internal:
-    driver: bridge
+  patient-management:
+    external: true
